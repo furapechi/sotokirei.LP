@@ -1,6 +1,10 @@
-'use client'
+import WorksAdminClient from './WorksAdminClient'
 
-// クライアントコンポーネントのみを残し、SSG時に実行される設定はここでは宣言しない
-export { default } from './WorksAdminClient'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+export default function Page() {
+  return <WorksAdminClient />
+}
 
 
