@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ImageUploader } from '@/components/ImageUploader'
@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 
 type Item = { slug: string; title: string; before: string; after: string }
+type WorksRow = { slug: string | null; title: string | null; before_images: string[] | null; after_images: string[] | null }
 
 const KEY = 'works-admin-drafts'
 export const dynamic = 'force-dynamic'
@@ -18,7 +19,7 @@ export default function WorksAdminPage() {
 		{ slug: 'sample-park-lawn', title: '公園の芝刈り', before: '', after: '' },
 		{ slug: 'sample-pruning', title: '庭木の剪定', before: '', after: '' },
 	])
-	const supabase = createClient()
+	const supabase = useMemo(() => createClient(), [])
 
 	useEffect(() => {
 		const saved = localStorage.getItem(KEY)
@@ -28,17 +29,17 @@ export default function WorksAdminPage() {
 				const { data } = await supabase.from('works').select('slug,title,before_images,after_images').limit(20)
 				if (data && data.length) {
 					setItems(
-						data.map((w: any) => ({
+						(data as WorksRow[]).map((w) => ({
 							slug: w.slug ?? 'no-slug',
 							title: w.title ?? '無題',
-							before: (w.before_images?.[0] as string) || '',
-							after: (w.after_images?.[0] as string) || '',
+							before: (w.before_images?.[0] ?? '') as string,
+							after: (w.after_images?.[0] ?? '') as string,
 						}))
 					)
 				}
 			} catch {}
 		})()
-	}, [])
+	}, [supabase])
 
 	useEffect(() => {
 		localStorage.setItem(KEY, JSON.stringify(items))
