@@ -1,103 +1,82 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { ServiceButtons } from "@/components/ServiceButtons";
+import { QuoteModal } from "@/components/QuoteModal";
+import { ContactForm } from "@/components/ContactForm";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { BeforeAfter } from "@/components/BeforeAfter";
 
 export default function Home() {
+  const [service, setService] = useState<string | null>(null);
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen py-16 flex flex-col items-center gap-10">
+      <section className="w-full text-center space-y-4">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">草刈・草むしり・伐採・剪定</h1>
+        <p className="text-slate-600">最短30秒で概算がわかる、透明で早いお見積り</p>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section className="w-full flex flex-col items-center gap-6">
+        <ServiceButtons onSelect={setService} />
+        <div id="quote">
+          <QuoteModal serviceSlug={service} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </section>
+
+      {/* 比較スライダー（ファーストビュー直下） */}
+      <section className="w-full mt-6 sm:mt-10">
+        <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-center">Before / After</h2>
+        <div className="max-w-4xl mx-auto">
+          <BeforeAfter
+            beforeUrl="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
+            afterUrl="https://images.unsplash.com/photo-1457410129867-5999af49daf7?q=80&w=1600&auto=format&fit=crop"
+            alt="施工前後の比較"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full mt-10">
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <h3 className="font-semibold mb-2">明朗会計</h3>
+          <p className="text-sm text-slate-600">m²単価ベースでわかりやすく、追加料金も事前提示。</p>
+        </div>
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <h3 className="font-semibold mb-2">即時対応</h3>
+          <p className="text-sm text-slate-600">お急ぎ案件も柔軟に。最短スケジュールをご提案。</p>
+        </div>
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <h3 className="font-semibold mb-2">安心品質</h3>
+          <p className="text-sm text-slate-600">プロの職人が丁寧に作業。アフターも万全。</p>
+        </div>
+      </section>
+
+      <section className="w-full grid md:grid-cols-2 gap-8 mt-12">
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold">よくある質問</h2>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="q1">
+              <AccordionTrigger>見積は無料ですか？</AccordionTrigger>
+              <AccordionContent>はい、現地調査・お見積は無料です。</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q2">
+              <AccordionTrigger>最短いつ来てもらえますか？</AccordionTrigger>
+              <AccordionContent>状況により当日〜3日以内のご案内が可能です。</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q3">
+              <AccordionTrigger>対応エリアは？</AccordionTrigger>
+              <AccordionContent>○○市・周辺エリアに対応しています。遠方もご相談ください。</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div className="space-y-4" id="contact">
+          <h2 className="text-2xl font-bold">お問い合わせ</h2>
+          <ContactForm
+            defaultService={service}
+            defaultArea={null}
+            defaultPrice={null}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      </section>
     </div>
   );
 }
