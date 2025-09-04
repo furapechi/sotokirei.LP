@@ -9,7 +9,19 @@ export async function POST(req: Request) {
 			return NextResponse.json({ ok: true })
 		}
 		const supabase = createClient()
-		const payload = {
+		type QuoteRow = {
+			service_slug: string | null
+			area_m2: number | null
+			inputs_json: Record<string, unknown>
+			calculated_price: number | null
+			name: string | null
+			phone: string | null
+			email: string | null
+			address: string | null
+			notes: string | null
+		}
+
+		const payload: QuoteRow = {
 			service_slug: body?.service_slug ?? null,
 			area_m2: body?.area_m2 ?? null,
 			inputs_json: body?.inputs_json ?? {},
@@ -24,13 +36,13 @@ export async function POST(req: Request) {
 		if (payload.area_m2 !== null && typeof payload.area_m2 !== 'number') {
 			return NextResponse.json({ ok: false, message: 'invalid area' }, { status: 400 })
 		}
-		const { error } = await supabase.from('quotes').insert(payload as any)
+		const { error } = await supabase.from('quotes').insert<QuoteRow>(payload)
 		if (error) {
 			// DB 未準備時も 200 を返す（LP 運用優先）
 			return NextResponse.json({ ok: true })
 		}
 		return NextResponse.json({ ok: true })
-	} catch (e) {
+	} catch {
 		return NextResponse.json({ ok: false }, { status: 500 })
 	}
 }

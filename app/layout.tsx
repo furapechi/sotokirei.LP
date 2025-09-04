@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -32,7 +33,7 @@ export default function RootLayout({
           <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
             <div className="font-bold">Sotokirei</div>
             <nav className="flex items-center gap-5 text-sm font-semibold">
-              <a href="/works" className="hover:underline">実績</a>
+              <Link href="/works" className="hover:underline">実績</Link>
               <a href="#contact" className="hover:underline">お問い合わせ</a>
               <a href="#quote" className="inline-block">今すぐ見積</a>
             </nav>

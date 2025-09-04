@@ -65,7 +65,7 @@ export function ContactForm({
 			} else {
 				toast.error('送信に失敗しました。しばらくして再度お試しください。')
 			}
-		} catch (e) {
+		} catch {
 			toast.error('通信エラーが発生しました')
 		} finally {
 			setSubmitting(false)
