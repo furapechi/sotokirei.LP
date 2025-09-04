@@ -1,4 +1,22 @@
 @import "tailwindcss";
+
+/* Subtle animated gradient background */
+html, body {
+  background: radial-gradient(1200px 600px at 10% -10%, #e8f0ff 0%, transparent 50%),
+              radial-gradient(1000px 500px at 90% -20%, #fef3c7 0%, transparent 50%),
+              linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+/* Cards hover lift */
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.06);
+}
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));

@@ -33,6 +33,7 @@ export default function RootLayout({
           <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
             <div className="font-bold">Sotokirei</div>
             <nav className="flex items-center gap-5 text-sm font-semibold">
+              <Link href="/" className="hover:underline">トップ</Link>
               <Link href="/works" className="hover:underline">実績</Link>
               <a href="#contact" className="hover:underline">お問い合わせ</a>
               <a href="#quote" className="inline-block">今すぐ見積</a>

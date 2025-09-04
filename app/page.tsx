@@ -40,9 +40,9 @@ export default function Home() {
   }, [supabase]);
   return (
     <div className="min-h-screen py-16 flex flex-col items-center gap-10">
-      <section className="w-full text-center space-y-4">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">草刈・草むしり・伐採・剪定</h1>
-        <p className="text-slate-600">最短30秒で概算がわかる、透明で早いお見積り</p>
+      <section className="w-full text-center space-y-5">
+        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight">草刈・草むしり・伐採・剪定</h1>
+        <p className="text-slate-600 text-lg">最短30秒で概算がわかる、透明で早いお見積り</p>
       </section>
 
       <section className="w-full flex flex-col items-center gap-6">
@@ -71,15 +71,15 @@ export default function Home() {
       </section>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full mt-10">
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm card-hover">
           <h3 className="font-semibold mb-2">明朗会計</h3>
           <p className="text-sm text-slate-600">m²単価ベースでわかりやすく、追加料金も事前提示。</p>
         </div>
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm card-hover">
           <h3 className="font-semibold mb-2">即時対応</h3>
           <p className="text-sm text-slate-600">お急ぎ案件も柔軟に。最短スケジュールをご提案。</p>
         </div>
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm card-hover">
           <h3 className="font-semibold mb-2">安心品質</h3>
           <p className="text-sm text-slate-600">プロの職人が丁寧に作業。アフターも万全。</p>
         </div>
