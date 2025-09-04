@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
+import { ImageUploader } from '@/components/ImageUploader'
 
 type Item = { slug: string; title: string; before: string; after: string }
 
@@ -33,14 +34,8 @@ export default function WorksAdminPage() {
 					<Card key={it.slug} className="p-4 grid gap-4">
 						<div className="font-semibold">{it.title}</div>
 						<div className="grid sm:grid-cols-2 gap-4">
-							<div className="grid gap-2">
-								<Label>Before 画像URL</Label>
-								<Input value={it.before} onChange={(e) => update(idx, { before: e.target.value })} placeholder="https://..." />
-							</div>
-							<div className="grid gap-2">
-								<Label>After 画像URL</Label>
-								<Input value={it.after} onChange={(e) => update(idx, { after: e.target.value })} placeholder="https://..." />
-							</div>
+							<ImageUploader label="Before" value={it.before} onChange={(url) => update(idx, { before: url ?? '' })} />
+							<ImageUploader label="After" value={it.after} onChange={(url) => update(idx, { after: url ?? '' })} />
 						</div>
 						<div>
 							<Button variant="outline" onClick={() => swap(idx)}>Before/After 入れ替え</Button>
