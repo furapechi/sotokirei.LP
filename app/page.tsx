@@ -31,9 +31,9 @@ export default function Home() {
           .order("created_at", { ascending: false })
           .limit(1);
         if (data && data.length) {
-          const w = data[0] as any;
-          setBeforeUrl((w.before_images?.[0] as string) || null);
-          setAfterUrl((w.after_images?.[0] as string) || null);
+          const w = data[0] as { before_images: string[] | null; after_images: string[] | null };
+          setBeforeUrl(w.before_images?.[0] ?? null);
+          setAfterUrl(w.after_images?.[0] ?? null);
         }
       } catch {}
     })();

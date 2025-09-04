@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { ImageUploader } from '@/components/ImageUploader'
 import { createClient } from '@/lib/supabase/client'
@@ -54,7 +55,10 @@ export default function WorksAdminClient() {
 
 	return (
 		<div className="py-8 space-y-6">
-			<h1 className="text-2xl font-bold">実績（画像アップロード・入替）</h1>
+			<div className="flex items-center justify-between">
+				<h1 className="text-2xl font-bold">実績（画像アップロード・入替）</h1>
+				<Link href="/" className="text-sm font-semibold underline">LPへ</Link>
+			</div>
 			<div className="grid gap-6">
 				{items.map((it, idx) => (
 					<Card key={it.slug} className="p-4 grid gap-4">
@@ -95,6 +99,7 @@ export default function WorksAdminClient() {
 					title: it.title,
 					before_images: it.before ? [it.before] : [],
 					after_images: it.after ? [it.after] : [],
+					status: 'published',
 				})
 			if (error) throw error
 			toast.success('保存しました')
