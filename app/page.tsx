@@ -1,14 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ServiceButtons } from "@/components/ServiceButtons";
 import { QuoteModal } from "@/components/QuoteModal";
 import { ContactForm } from "@/components/ContactForm";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BeforeAfter } from "@/components/BeforeAfter";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Home() {
   const [service, setService] = useState<string | null>(null);
+  const [beforeUrl, setBeforeUrl] = useState<string | null>(null);
+  const [afterUrl, setAfterUrl] = useState<string | null>(null);
+
+  const supabase = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) return null;
+    return createClient();
+  }, []);
+
+  useEffect(() => {
+    if (!supabase) return;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from("works")
+          .select("before_images, after_images, status, created_at")
+          .eq("status", "published")
+          .order("created_at", { ascending: false })
+          .limit(1);
+        if (data && data.length) {
+          const w = data[0] as any;
+          setBeforeUrl((w.before_images?.[0] as string) || null);
+          setAfterUrl((w.after_images?.[0] as string) || null);
+        }
+      } catch {}
+    })();
+  }, [supabase]);
   return (
     <div className="min-h-screen py-16 flex flex-col items-center gap-10">
       <section className="w-full text-center space-y-4">
@@ -28,8 +57,14 @@ export default function Home() {
         <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-center">Before / After</h2>
         <div className="max-w-4xl mx-auto">
           <BeforeAfter
-            beforeUrl="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
-            afterUrl="https://images.unsplash.com/photo-1457410129867-5999af49daf7?q=80&w=1600&auto=format&fit=crop"
+            beforeUrl={
+              beforeUrl ||
+              "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
+            }
+            afterUrl={
+              afterUrl ||
+              "https://images.unsplash.com/photo-1457410129867-5999af49daf7?q=80&w=1600&auto=format&fit=crop"
+            }
             alt="施工前後の比較"
           />
         </div>
