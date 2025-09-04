@@ -41,16 +41,16 @@ export function BeforeAfter({
 			onPointerMove={onPointerMove}
 			style={{ aspectRatio: '16/10' }}
 		>
-			<Image src={beforeUrl} alt={alt + ' before'} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+			<Image src={beforeUrl} alt={alt + ' before'} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
 			<div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-				<Image src={afterUrl} alt={alt + ' after'} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+				<Image src={afterUrl} alt={alt + ' after'} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
 			</div>
 			<div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
 				<div className="h-full w-0.5 bg-white/80 shadow-[0_0_0_1px_rgba(0,0,0,.08)]" />
 				<div className="absolute -left-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white shadow ring-1 ring-black/10" />
 			</div>
-			<div className="absolute left-3 top-3 text-xs font-semibold px-2 py-1 rounded bg-white/85">Before</div>
-			<div className="absolute right-3 top-3 text-xs font-semibold px-2 py-1 rounded bg-white/85">After</div>
+			<div className="pointer-events-none select-none absolute left-3 top-3 text-xs font-semibold px-2 py-1 rounded bg-white/85">Before</div>
+			<div className="pointer-events-none select-none absolute right-3 top-3 text-xs font-semibold px-2 py-1 rounded bg-white/85">After</div>
 		</div>
 	)
 }
