@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 		if (body?.website) {
 			return NextResponse.json({ ok: true })
 		}
-		const supabase = createClient()
+		const supabase = await createClient()
 		type QuoteRow = {
 			service_slug: string | null
 			area_m2: number | null
