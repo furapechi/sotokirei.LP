@@ -8,10 +8,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { createClient } from "@/lib/supabase/client";
 
+type WorkItem = { slug?: string | null; title?: string | null; beforeUrl: string; afterUrl: string };
+
 export default function Home() {
   const [service, setService] = useState<string | null>(null);
-  const [beforeUrl, setBeforeUrl] = useState<string | null>(null);
-  const [afterUrl, setAfterUrl] = useState<string | null>(null);
+  const [items, setItems] = useState<WorkItem[]>([]);
 
   const supabase = useMemo(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -26,14 +27,20 @@ export default function Home() {
       try {
         const { data } = await supabase
           .from("works")
-          .select("before_images, after_images, status, created_at")
+          .select("slug,title,before_images,after_images,status,created_at")
           .eq("status", "published")
           .order("created_at", { ascending: false })
-          .limit(1);
+          .limit(8);
         if (data && data.length) {
-          const w = data[0] as { before_images: string[] | null; after_images: string[] | null };
-          setBeforeUrl(w.before_images?.[0] ?? null);
-          setAfterUrl(w.after_images?.[0] ?? null);
+          const mapped = data
+            .map((w: any) => ({
+              slug: w.slug ?? null,
+              title: w.title ?? null,
+              beforeUrl: (w.before_images?.[0] ?? "") as string,
+              afterUrl: (w.after_images?.[0] ?? "") as string,
+            }))
+            .filter((i: WorkItem) => i.beforeUrl && i.afterUrl);
+          setItems(mapped);
         }
       } catch {}
     })();
@@ -55,18 +62,34 @@ export default function Home() {
       {/* 比較スライダー（ファーストビュー直下） */}
       <section className="w-full mt-6 sm:mt-10">
         <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-center">Before / After</h2>
-        <div className="max-w-4xl mx-auto">
-          <BeforeAfter
-            beforeUrl={
-              beforeUrl ||
-              "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
-            }
-            afterUrl={
-              afterUrl ||
-              "https://images.unsplash.com/photo-1457410129867-5999af49daf7?q=80&w=1600&auto=format&fit=crop"
-            }
-            alt="施工前後の比較"
-          />
+        <div className="max-w-5xl mx-auto grid gap-6">
+          {items.length > 0 ? (
+            <>
+              <BeforeAfter
+                beforeUrl={items[0].beforeUrl}
+                afterUrl={items[0].afterUrl}
+                alt={items[0].title ?? "施工前後の比較"}
+              />
+              {items.length > 1 && (
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {items.slice(1).map((it, idx) => (
+                    <BeforeAfter
+                      key={(it.slug ?? "") + idx}
+                      beforeUrl={it.beforeUrl}
+                      afterUrl={it.afterUrl}
+                      alt={it.title ?? "施工前後の比較"}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <BeforeAfter
+              beforeUrl="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
+              afterUrl="https://images.unsplash.com/photo-1457410129867-5999af49daf7?q=80&w=1600&auto=format&fit=crop"
+              alt="施工前後の比較"
+            />
+          )}
         </div>
       </section>
 
