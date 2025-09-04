@@ -15,12 +15,21 @@ export default function WorksAdminClient() {
 		{ slug: 'sample-park-lawn', title: '公園の芝刈り', before: '', after: '' },
 		{ slug: 'sample-pruning', title: '庭木の剪定', before: '', after: '' },
 	])
-	const supabase = useMemo(() => createClient(), [])
+	const supabase = useMemo(() => {
+		const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+		const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+		if (!url || !key) return null
+		return createClient()
+	}, [])
 
 	useEffect(() => {
 		const KEY = 'works-admin-drafts'
 		const saved = localStorage.getItem(KEY)
 		if (saved) setItems(JSON.parse(saved))
+		if (!supabase) {
+			console.warn('Supabase 環境変数が未設定のため、管理画面の読み込みをスキップします。')
+			return
+		}
 		;(async () => {
 			try {
 				const { data } = await supabase.from('works').select('slug,title,before_images,after_images').limit(20)
@@ -36,11 +45,6 @@ export default function WorksAdminClient() {
 				}
 			} catch {}
 		})()
-
-		return () => {
-			// persist on unmount
-			localStorage.setItem(KEY, JSON.stringify(items))
-		}
 	}, [supabase])
 
 	useEffect(() => {
@@ -80,6 +84,10 @@ export default function WorksAdminClient() {
 	async function save(index: number) {
 		const it = items[index]
 		try {
+			if (!supabase) {
+				toast.error('Supabase 環境変数が未設定のため保存できません')
+				return
+			}
 			const { error } = await supabase
 				.from('works')
 				.upsert({
